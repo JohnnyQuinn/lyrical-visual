@@ -1,0 +1,26 @@
+{
+  "name": "lyrical_visual",
+  "version": "1.0.0",
+  "description": "## Objective:",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JohnnyQuinn/lyrical-visual.git"
+  },
+  "author": "Johnny Quinn",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JohnnyQuinn/lyrical-visual/issues"
+  },
+  "homepage": "https://github.com/JohnnyQuinn/lyrical-visual#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "express-handlebars": "^5.3.4",
+    "nodemon": "^2.0.13",
+    "path": "^0.12.7"
+  }
+}
