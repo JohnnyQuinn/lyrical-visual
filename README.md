@@ -20,9 +20,10 @@ Searches for a complete transcript of a song’s lyrics in order to fully take i
 
 ### Phase 1: 
 
-Draw up wireframes 
-Build basic node app 
-Push to live hosting
+- Draw up wireframes 
+- Build basic node app with express server and handlebars 
+- set up Dockerfile
+- Push to live hosting
 
 ### Phase 2:
 
