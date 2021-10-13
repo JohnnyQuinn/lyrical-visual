@@ -4,6 +4,19 @@
 
 Listening to a song by itself and listening to it while reading the lyrics are two different things. Spotify as of right now does not have a feature to display real time lyrics of a song being played. Lyrical Visual is meant to facilitate that capability in a cool way. 
 
+## Inspiration 
+
+![insta music demo](./images/insta_music_demo.gif)
+
+## Wireframes 
+
+### Landing Page
+![landing page](./images/landing_page.png)
+### Song Seach Page
+![song search page](./images/song_search_page.png)
+### Player page
+![player page](./images/player_page.png)
+
 ## User Persona:
 
 Steven, casual listener
