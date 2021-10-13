@@ -19,9 +19,12 @@
   },
   "homepage": "https://github.com/JohnnyQuinn/lyrical-visual#readme",
   "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "express-handlebars": "^5.3.4",
     "nodemon": "^2.0.13",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "spotify-web-api-node": "^5.0.2"
   }
 }
