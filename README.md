@@ -1,5 +1,8 @@
 # Lyrical Visual
 
+## Live version
+![https://lyrical-visual.herokuapp.com/](https://lyrical-visual.herokuapp.com/)
+
 ## Objective: 
 Listening to a song by itself and listening to it while reading the lyrics are two different things. Spotify as of right now does not have a feature to display real time lyrics of a song being played. Lyrical Visual is meant to facilitate that capability in a cool way. 
 
