@@ -3,7 +3,6 @@ const exphbs = require('express-handlebars');
 const path = require('path');
 
 const app = express();
-const PORT = '3000';
 
 app.engine('handlebars', exphbs({
     layoutsDir: path.join(__dirname, '/views/layouts '),
@@ -17,6 +16,14 @@ app.use(express.static('public'))
 app.get('/', (req, res) => {
     res.render('home');
 });
+
+// const PORT = process.env.PORT || 3000
+
+// app.listen(process.env.PORT, () => {
+//     console.log("\n Server listening on port " + PORT + "\n")
+// });
+
+const PORT = process.env.PORT || 3000
 
 app.listen(PORT, () => {
     console.log("\n Server listening on port " + PORT + "\n")
