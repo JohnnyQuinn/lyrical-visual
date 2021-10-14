@@ -4,7 +4,8 @@ const exphbs = require('express-handlebars');
 const env = require('dotenv').config()
 const SpotifyWebApi = require('spotify-web-api-node'); //3rd party Spotify npm package
 const path = require('path');
-const cors = require('cors')
+const cors = require('cors');
+const { connect } = require('http2');
 
 
 // --- SERVER SET UP ---
@@ -48,10 +49,28 @@ app.get('/login', (req, res) => {
 
 // PLAYER  
 app.get('/player', (req, res, next) => {
-  const access_token = () => String(spotifyApi.getAccessToken())
-  console.log(access_token)
-  res.render('player', {access_token: access_token()});
-})
+  const access_token = () => String(spotifyApi.getAccessToken()) //current access token
+  page = 'player' //handlebars page (used in res.render)
+
+  // sets user_data = initial promise of current authenticated user's data 
+  const user_data = spotifyApi.getMe()
+  .then((data) => {
+    return data
+  })
+
+  // uses values' from user_data promise for rendering player page
+  const displayUserInfo = async () => {
+    try {
+      const name = (await user_data).body.display_name
+      display_name = () => name
+      res.render(page, {access_token: access_token(), display_name: display_name()});
+    } catch {
+
+    }
+  }
+
+  displayUserInfo()
+})    
 
 // --- AUTHENTICATION ---
 const scopes = [
@@ -116,16 +135,16 @@ app.get('/callback', (req, res) => {
         console.log('\nrefresh_token:', refresh_token);
   
         console.log(
-          `\nSucessfully retreived access token. Expires in ${expires_in} s.`
+          `\nSucessfully retreived access token. Expires in ${expires_in} s.\n`
         );
-        res.send('Success! You can now close the window.');
-        res.redirect('/')
+        // res.send('Success! You can now close the window.');
+        res.redirect('/player')
   
         setInterval(async () => {
           const data = await spotifyApi.refreshAccessToken();
           const access_token = data.body['access_token'];
   
-          console.log('The access token has been refreshed!');
+          console.log('The access token has been refreshed!\n');
           console.log('access_token:', access_token);
           spotifyApi.setAccessToken(access_token);
         }, expires_in / 2 * 1000);
@@ -150,3 +169,13 @@ app.get('/refresh', (req, res) => {
     }
   );
 })
+
+async function getDisplayName() {
+  spotifyApi.getMe()
+  .then(function(data) {
+    console.log('Some information about the authenticated user', data.body);
+    return data
+  }, function(err) {
+    console.log('Something went wrong!', err);
+  })
+}
