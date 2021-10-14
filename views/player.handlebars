@@ -1,0 +1,45 @@
+<h1>Player</h1>
+<a href="/">HOME</a>
+<script src="https://sdk.scdn.co/spotify-player.js"></script>
+<script>
+    window.onSpotifyWebPlaybackSDKReady = () => {
+        const token = '{{access_token}}';
+        const player = new Spotify.Player({
+            name: 'Web Playback SDK Quick Start Player',
+            getOAuthToken: cb => { cb(token); },
+            volume: 0.5
+        })
+        // READY
+        player.addListener('ready', ({ device_id }) => {
+            console.log('Ready with Device ID', device_id);
+        });
+
+        // NOT READY
+        player.addListener('not_ready', ({ device_id }) => {
+            console.log('Device ID has gone offline', device_id);
+        });
+
+        // ERROR MSGS
+        player.addListener('initialization_error', ({ message }) => { 
+            console.error(message);
+        });
+
+        player.addListener('authentication_error', ({ message }) => {
+            console.error(message);
+        });
+
+        player.addListener('account_error', ({ message }) => {
+            console.error(message);
+        });
+
+        // CONNECT tO SPOTIFY INSTANCE
+        player.connect();
+
+        document.getElementById('togglePlay').onclick = function() {
+            player.togglePlay();
+        };
+    };
+</script>
+    <button id="togglePlay">Toggle Play</button>
+
+

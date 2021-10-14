@@ -18,13 +18,12 @@ app.listen(PORT, () => {
 });
 
 // --- FRONTEND TEMPLATING SET UP ---
-app.engine('handlebars', exphbs({
-    //set default path for views
-    layoutsDir: path.join(__dirname, '/views/layouts '),
-}));
+const hbs = exphbs.create({
+  layoutsDir: path.join(__dirname, '/views/layouts ')
+})
    
+app.engine('handlebars', hbs.engine)
 app.set('view engine', 'handlebars');
-app.set('views',path.join(__dirname,'views'))
 
 app.use(express.static('public'))
 .use(cors());
@@ -34,10 +33,10 @@ app.use(express.static('public'))
 // HOMEPAGE
 app.get('/', (req, res) => {
     if(spotifyApi === undefined){
-      console.log(`\n spotifyApi object is undefined \n`)
+      console.log(`\n spotifyApi.getAccessToken is undefined \n`)
     }
     else {
-      console.log(`\nspotifyAPI: ${spotifyApi}\n`)
+      console.log(`\nspotifyAPI.getAccessToken: ${spotifyApi.getAccessToken()}\n`)
     }
     res.render('home');
 });
@@ -45,6 +44,13 @@ app.get('/', (req, res) => {
 // LOGIN
 app.get('/login', (req, res) => {
     res.redirect(authorizeURL)
+})
+
+// PLAYER  
+app.get('/player', (req, res, next) => {
+  const access_token = () => String(spotifyApi.getAccessToken())
+  console.log(access_token)
+  res.render('player', {access_token: access_token()});
 })
 
 // --- AUTHENTICATION ---
@@ -112,7 +118,8 @@ app.get('/callback', (req, res) => {
         console.log(
           `\nSucessfully retreived access token. Expires in ${expires_in} s.`
         );
-        res.send('Success! You can now close the window.');
+        // res.send('Success! You can now close the window.');
+        res.redirect('/')
   
         setInterval(async () => {
           const data = await spotifyApi.refreshAccessToken();
