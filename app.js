@@ -118,7 +118,7 @@ app.get('/callback', (req, res) => {
         console.log(
           `\nSucessfully retreived access token. Expires in ${expires_in} s.`
         );
-        // res.send('Success! You can now close the window.');
+        res.send('Success! You can now close the window.');
         res.redirect('/')
   
         setInterval(async () => {
@@ -149,15 +149,4 @@ app.get('/refresh', (req, res) => {
       console.log('Could not refresh access token', err);
     }
   );
-})
-
-app.get('/getme', (req, res) => {
-    (async () => {
-        const me = await spotifyApi.getMe();
-        console.log(me);
-        res.render('home')
-    })().catch(e => {
-        console.error(e);
-        res.render('home')
-    });
 })
