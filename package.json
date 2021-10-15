@@ -1,8 +1,8 @@
 {
   "name": "lyrical_visual",
   "version": "1.0.0",
-  "description": "## Objective:",
-  "main": "index.js",
+  "description": "Display lyrics in real time of song currently playing on user's spotify",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon app.js",
@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/JohnnyQuinn/lyrical-visual.git"
+    "url": "https://github.com/JohnnyQuinn/lyrical-visual.git"
   },
   "author": "Johnny Quinn",
   "license": "ISC",

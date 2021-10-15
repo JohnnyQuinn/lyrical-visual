@@ -1,15 +1,15 @@
-const { request } = require('express');
 const express = require('express');
 const exphbs = require('express-handlebars');
 const env = require('dotenv').config()
 const SpotifyWebApi = require('spotify-web-api-node'); //3rd party Spotify npm package
 const path = require('path');
 const cors = require('cors');
-const { connect } = require('http2');
 
 
 // --- SERVER SET UP ---
 const app = express();
+
+app.use(cors())
 
 // set PORT to process.env.PORT (for Heroku) or 3000
 const PORT = process.env.PORT || 3000
@@ -27,7 +27,6 @@ app.engine('handlebars', hbs.engine)
 app.set('view engine', 'handlebars');
 
 app.use(express.static('public'))
-.use(cors());
 
 // --- BASIC ROUTES ---
 
@@ -55,6 +54,7 @@ app.get('/player', (req, res, next) => {
   // sets user_data = initial promise of current authenticated user's data 
   const user_data = spotifyApi.getMe()
   .then((data) => {
+    console.log('Some information about the authenticated user', data.body);
     return data
   })
 
@@ -63,9 +63,10 @@ app.get('/player', (req, res, next) => {
     try {
       const name = (await user_data).body.display_name
       display_name = () => name
+      console.log(`\nUSER CONNECTED:\n${display_name()}\n`)
       res.render(page, {access_token: access_token(), display_name: display_name()});
     } catch {
-
+      res.render(page, {access_token: access_token()})
     }
   }
 
@@ -107,7 +108,6 @@ const spotifyApi = new SpotifyWebApi({
 });
 
 const authorizeURL = spotifyApi.createAuthorizeURL(scopes);
-console.log(`\n --- Authentication URL --- \n${authorizeURL}\n --- Authentication URL --- `);
 
 // CALLBACK 
 app.get('/callback', (req, res) => {
@@ -130,13 +130,15 @@ app.get('/callback', (req, res) => {
   
         spotifyApi.setAccessToken(access_token);
         spotifyApi.setRefreshToken(refresh_token);
-  
-        console.log('\naccess_token:', access_token);
+        
+        console.log(' --- TOKENS ---')
+        console.log('access_token:', access_token);
         console.log('\nrefresh_token:', refresh_token);
   
         console.log(
-          `\nSucessfully retreived access token. Expires in ${expires_in} s.\n`
+          `\nSucessfully retreived access token. Expires in ${expires_in} s.`
         );
+        console.log(' --- TOKENS ---')
         // res.send('Success! You can now close the window.');
         res.redirect('/player')
   

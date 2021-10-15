@@ -3,10 +3,19 @@
     window.onSpotifyWebPlaybackSDKReady = () => {
         const token = '{{access_token}}';
         const player = new Spotify.Player({
-            name: 'Web Playback SDK Quick Start Player',
+            name: 'Lyrical Visual',
             getOAuthToken: cb => { cb(token); },
             volume: 0.5
         })
+
+        // CONNECT TO SPOTIFY INSTANCE
+        player.connect().then(success => {
+            if (success) {
+                console.log('The Web Playback SDK successfully connected to Spotify!');
+            }
+        })
+
+        // --- LISTENERS ---
         // READY
         player.addListener('ready', ({ device_id }) => {
             console.log('Ready with Device ID', device_id);
@@ -17,31 +26,59 @@
             console.log('Device ID has gone offline', device_id);
         });
 
-        // ERROR MSGS
+        // INIT ERROR
         player.addListener('initialization_error', ({ message }) => { 
             console.error(message);
         });
 
+        // AUTH ERROR
         player.addListener('authentication_error', ({ message }) => {
             console.error(message);
         });
 
+        // ACCOUNT ERROR
         player.addListener('account_error', ({ message }) => {
             console.error(message);
         });
 
-        // CONNECT tO SPOTIFY INSTANCE
-        player.connect();
+        // PLAYER STATE CHANGED
+        player.addListener('player_state_changed', ({
+            position,
+            duration,
+            track_window: { current_track }
+        }) => {
+            console.log('Currently Playing', current_track);
+            console.log('Position in Song', position);
+            console.log('Duration of Song', duration);
+        });
 
+        // --- BUTTONS ---
+
+        // TOGGLE PLAY BUTTON
         document.getElementById('togglePlay').onclick = function() {
             player.togglePlay();
         };
+
+        // PREVIOUS TRACK
+        document.getElementById('previousTrack').onclick = function() {
+            player.previousTrack();
+            console.log('Set to previous track!');
+        }
+
+        // NEXT TRACK
+        document.getElementById('nextTrack').onclick = function() {
+            player.nextTrack(); 
+            console.log('Skipped to next track!')
+        }
     };
 </script>
 <div>
     <h1>Hello, {{display_name}}</h1>
 </div>
 <h1>Player</h1>
+<button id="previousTrack">Previous Track</button>
 <button id="togglePlay">Toggle Play</button>
+<button id="nextTrack">Next Track</button>
+
 
 
